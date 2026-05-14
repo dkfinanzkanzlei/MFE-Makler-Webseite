@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MFE Makler GmbH – Versicherungen & Energieverträge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:       #0a0a0a;
+    --black-soft:  #111111;
+    --black-mid:   #1c1c1c;
+    --charcoal:    #2a2a2a;
+    --green:       #1a7a30;
+    --green-mid:   #22a040;
+    --green-light: #2ec44e;
+    --green-pale:  #e8f7ec;
+    --white:       #ffffff;
+    --off-white:   #f7f7f5;
+    --gray-light:  #eeeeec;
+    --gray:        #d4d4d0;
+    --text:        #0a0a0a;
+    --text-muted:  #666660;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 5%;
+    background: rgba(10,10,10,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .nav-logo { display: flex; align-items: center; gap: .7rem; text-decoration: none; }
+  .nav-logo-icon {
+    width: 42px; height: 42px;
+    background: var(--green); border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1rem; color: #fff;
+  }
+  .nav-logo-text strong { font-size: .95rem; color: #fff; font-weight: 700; display: block; }
+  .nav-logo-text span { font-size: .62rem; color: rgba(255,255,255,0.45); letter-spacing: .09em; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: .88rem; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: var(--green-light); }
+  .nav-cta {
+    background: var(--green); color: #fff; border: none;
+    padding: .6rem 1.4rem; border-radius: 6px; font-size: .88rem; font-weight: 700;
+    cursor: pointer; text-decoration: none; transition: background .2s;
+  }
+  .nav-cta:hover { background: var(--green-mid); }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    background: var(--black);
+    display: flex; align-items: center;
+    padding: 7rem 5% 4rem;
+    position: relative; overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 55% 60% at 75% 45%, rgba(26,122,48,0.12) 0%, transparent 70%);
+  }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; width: 100%; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(46,196,78,0.1); border: 1px solid rgba(46,196,78,0.25);
+    color: var(--green-light); font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    padding: .38rem .9rem; border-radius: 100px; margin-bottom: 1.5rem;
+  }
+  .hero-tag::before { content: '●'; font-size: .45rem; }
+
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+    font-weight: 900; line-height: 1.1; color: var(--white); margin-bottom: 1.4rem;
+  }
+  .hero-headline em { font-style: normal; color: var(--green-light); }
+
+  .hero-sub { font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,0.6); max-width: 480px; margin-bottom: 2.2rem; }
+
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--green); color: #fff;
+    padding: .85rem 2rem; border-radius: 8px;
+    font-size: .95rem; font-weight: 700; text-decoration: none;
+    border: 2px solid var(--green);
+    transition: background .2s, transform .2s;
+    display: inline-flex; align-items: center; gap: .5rem;
+  }
+  .btn-primary:hover { background: var(--green-mid); border-color: var(--green-mid); transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: transparent; border: 2px solid rgba(255,255,255,0.2);
+    color: #fff; padding: .85rem 2rem; border-radius: 8px;
+    font-size: .95rem; font-weight: 600; text-decoration: none;
+    transition: border-color .2s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.5); }
+
+  .hero-stats { display: flex; gap: 2rem; margin-top: 3rem; }
+  .stat { border-left: 2px solid var(--green); padding-left: 1rem; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: #fff; }
+  .stat-label { font-size: .75rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: .08em; }
+
+  .hero-card {
+    background: var(--black-mid);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px; padding: 2.5rem;
+  }
+  .guarantee-badge {
+    background: var(--green); color: #fff;
+    border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center;
+  }
+  .guarantee-badge .big { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; display: block; line-height: 1; }
+  .guarantee-badge .label { font-size: .82rem; font-weight: 700; margin-top: .3rem; opacity: .85; letter-spacing: .06em; text-transform: uppercase; }
+  .guarantee-text { color: rgba(255,255,255,0.7); font-size: .9rem; line-height: 1.65; text-align: center; }
+  .guarantee-text strong { color: #fff; }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 6rem 5%; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-label { text-transform: uppercase; letter-spacing: .12em; font-size: .74rem; font-weight: 700; color: var(--green); margin-bottom: .8rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 900; line-height: 1.2; color: var(--black); margin-bottom: 1.2rem; }
+  .section-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 600px; line-height: 1.7; }
+  .green-divider { height: 3px; background: var(--green); width: 48px; margin: 1rem 0 1.8rem; }
+
+  /* ─── STORY ─── */
+  #story { background: var(--off-white); }
+  .story-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: center; }
+  .story-photo-wrap { position: relative; }
+  .story-photo {
+    width: 100%; aspect-ratio: 3/4; border-radius: 20px; overflow: hidden;
+    background: var(--charcoal);
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--gray);
+  }
+  .story-photo-placeholder { color: rgba(255,255,255,0.2); font-size: 4.5rem; text-align: center; }
+  .story-photo-placeholder span { display: block; font-size: .9rem; margin-top: .5rem; letter-spacing: .05em; color: rgba(255,255,255,0.3); }
+  .story-badge {
+    position: absolute; bottom: -1.5rem; right: -1.5rem;
+    background: var(--black); color: #fff;
+    border-radius: 14px; padding: 1.2rem 1.5rem;
+    font-size: .85rem; font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .story-badge strong { font-size: 1.5rem; display: block; font-family: 'Playfair Display',serif; color: var(--green-light); }
+  .story-quote {
+    font-family: 'Playfair Display', serif; font-size: 1.25rem; font-style: italic; color: var(--black);
+    border-left: 3px solid var(--green); padding-left: 1.5rem; margin-bottom: 2rem; line-height: 1.5;
+  }
+  .story-text { font-size: 1rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 1.2rem; }
+  .story-highlights { display: flex; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap; }
+  .story-highlight { display: flex; align-items: center; gap: .5rem; font-size: .88rem; font-weight: 600; color: var(--black); }
+  .story-highlight::before { content: '✓'; color: var(--green); font-weight: 900; }
+
+  /* ─── SERVICES ─── */
+  #services { background: var(--white); }
+  .services-intro { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem; flex-wrap: wrap; gap: 2rem; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .service-card {
+    border: 1.5px solid var(--gray-light); border-radius: 18px; padding: 2rem;
+    transition: border-color .25s, transform .25s; background: var(--white);
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--green); transform: scaleX(0); transform-origin: left; transition: transform .3s;
+  }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card:hover { border-color: var(--green); transform: translateY(-4px); }
+  .service-icon {
+    width: 50px; height: 50px; border-radius: 12px;
+    background: var(--black); display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 1.2rem;
+  }
+  .service-title { font-size: 1.05rem; font-weight: 700; color: var(--black); margin-bottom: .6rem; }
+  .service-desc { font-size: .9rem; color: var(--text-muted); line-height: 1.65; }
+  .service-link { display: inline-flex; align-items: center; gap: .3rem; color: var(--green); font-size: .85rem; font-weight: 700; text-decoration: none; margin-top: 1rem; transition: gap .2s; }
+  .service-link:hover { gap: .6rem; }
+
+  /* ─── USP 200€ ─── */
+  #usp { background: var(--black); color: #fff; position: relative; overflow: hidden; }
+  #usp::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 50% 70% at 90% 50%, rgba(26,122,48,0.15) 0%, transparent 65%);
+  }
+  .usp-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: center; position: relative; z-index: 1; }
+  .usp-big {
+    font-family: 'Playfair Display', serif; font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 900; line-height: 1; color: var(--green-light); margin-bottom: .5rem;
+  }
+  .usp-sub-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1.2rem; color: #fff; }
+  .usp-desc { font-size: 1rem; line-height: 1.7; color: rgba(255,255,255,0.6); margin-bottom: 2rem; }
+  .usp-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px; padding: 2.5rem; text-align: center;
+  }
+  .usp-card-icon { font-size: 2.8rem; margin-bottom: 1rem; }
+  .usp-card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: .8rem; }
+  .usp-card-text { font-size: .9rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+  .usp-steps { list-style: none; margin: 2rem 0; display: flex; flex-direction: column; gap: .9rem; }
+  .usp-steps li { display: flex; gap: 1rem; align-items: flex-start; font-size: .92rem; color: rgba(255,255,255,0.75); }
+  .step-num { min-width: 26px; height: 26px; background: var(--green); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .72rem; font-weight: 800; flex-shrink: 0; }
+
+  /* ─── INDEPENDENCE ─── */
+  #independence { background: var(--off-white); }
+  .indep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .indep-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .indep-tile {
+    background: var(--white); border-radius: 16px; padding: 1.5rem;
+    border: 1.5px solid var(--gray-light); text-align: center;
+  }
+  .indep-tile .big { font-family: 'Playfair Display',serif; font-size: 2rem; font-weight: 900; color: var(--black); }
+  .indep-tile .small { font-size: .75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .07em; margin-top: .2rem; }
+  .indep-tile.accent { background: var(--black); border-color: var(--black); }
+  .indep-tile.accent .big { color: var(--green-light); }
+  .indep-tile.accent .small { color: rgba(255,255,255,0.4); }
+  .indep-points { list-style: none; margin: 2rem 0; display: flex; flex-direction: column; gap: 1.1rem; }
+  .indep-points li { display: flex; gap: 1rem; align-items: flex-start; font-size: .95rem; color: var(--text-muted); line-height: 1.55; }
+  .check { min-width: 22px; height: 22px; background: var(--green); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .65rem; font-weight: 900; flex-shrink: 0; }
+
+  /* ─── TESTIMONIALS ─── */
+  #testimonials { background: var(--white); }
+  .testi-intro { text-align: center; margin-bottom: 3.5rem; }
+  .testi-intro .section-sub { margin: 0 auto; }
+  .stars { color: var(--green); font-size: 1rem; letter-spacing: .1em; margin-bottom: .5rem; }
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .testi-card { border: 1.5px solid var(--gray-light); border-radius: 18px; padding: 2rem; transition: border-color .25s; }
+  .testi-card:hover { border-color: var(--green); }
+  .testi-text { font-size: .95rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 1.5rem; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: .8rem; }
+  .testi-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--black); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--green-light); font-size: .82rem; }
+  .testi-name { font-weight: 700; font-size: .9rem; color: var(--black); }
+  .testi-role { font-size: .76rem; color: var(--text-muted); }
+
+  /* ─── CALENDAR ─── */
+  #calendar { background: var(--black); color: #fff; }
+  .cal-inner { text-align: center; max-width: 750px; margin: 0 auto; }
+  .cal-inner .section-title { color: #fff; }
+  .cal-inner .section-sub { color: rgba(255,255,255,0.55); margin: 0 auto 2.5rem; }
+  .cal-embed {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px; padding: 3rem; min-height: 400px;
+    display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1.2rem;
+  }
+  .cal-embed-icon { font-size: 3rem; }
+  .cal-embed-text { font-size: 1rem; color: rgba(255,255,255,0.65); text-align: center; line-height: 1.65; }
+  .cal-embed-hint { font-size: .78rem; color: rgba(255,255,255,0.3); }
+
+  /* ─── FOOTER ─── */
+  footer { background: var(--black-soft); color: rgba(255,255,255,0.55); padding: 3.5rem 5% 2rem; border-top: 1px solid rgba(255,255,255,0.07); }
+  .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+  .footer-brand .brand-tagline { font-size: .87rem; margin-top: .8rem; line-height: 1.6; color: rgba(255,255,255,0.4); }
+  .footer-col h4 { font-size: .82rem; font-weight: 700; color: #fff; margin-bottom: 1rem; letter-spacing: .07em; text-transform: uppercase; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+  .footer-col ul li a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: .84rem; transition: color .2s; }
+  .footer-col ul li a:hover { color: var(--green-light); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: .78rem; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 960px) {
+    .hero-grid, .story-grid, .services-grid, .usp-grid, .indep-grid, .testi-grid, .footer-grid { grid-template-columns: 1fr; }
+    nav .nav-links { display: none; }
+    .hero-stats { flex-wrap: wrap; }
+    .story-badge { position: static; margin-top: 1rem; display: inline-block; }
+    .services-intro { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+  .fade-up.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">MFE</div>
+    <div class="nav-logo-text">
+      <strong>MFE Makler GmbH</strong>
+      <span>Versicherungen &amp; Energieverträge</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#story">Über mich</a></li>
+    <li><a href="#services">Leistungen</a></li>
+    <li><a href="#usp">Garantie</a></li>
+    <li><a href="#testimonials">Bewertungen</a></li>
+  </ul>
+  <a href="#calendar" class="nav-cta">Termin buchen</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid container">
+    <div>
+      <div class="hero-tag">Unabhängige Beratung · Köln &amp; bundesweit</div>
+      <h1 class="hero-headline">
+        Versicherungen &amp; Energie –<br>
+        <em>einfach besser</em> beraten.
+      </h1>
+      <p class="hero-sub">
+        Als unabhängiger Makler finde ich für dich die besten Tarife am Markt – oder du bekommst <strong style="color:#fff">200 € Cash</strong>. Ehrlich. Transparent. Auf deiner Seite.
+      </p>
+      <div class="hero-btns">
+        <a href="#calendar" class="btn-primary">🗓 Kostenloses Gespräch</a>
+        <a href="#story" class="btn-secondary">Meine Story</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Zufriedene Kunden</div></div>
+        <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Versicherer im Vergleich</div></div>
+        <div class="stat"><div class="stat-num">200€</div><div class="stat-label">Spar-Garantie</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="hero-card">
+        <div class="guarantee-badge">
+          <span class="big">200€</span>
+          <div class="label">Ersparnis-Garantie</div>
+        </div>
+        <p class="guarantee-text">
+          Ich finde für dich einen <strong>besseren Tarif</strong> als du aktuell hast –
+          oder du bekommst <strong>200 € in bar</strong>. Kein Kleingedrucktes. Versprochen.
+        </p>
+        <a href="#usp" style="display:block;margin-top:1.5rem;text-align:center;color:var(--green-light);font-size:.85rem;font-weight:700;text-decoration:none;">Wie das funktioniert →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section id="story">
+  <div class="container">
+    <div class="story-grid">
+      <div class="story-photo-wrap">
+        <div class="story-photo">
+          <div class="story-photo-placeholder">
+            👤
+            <span>Dein Foto hier</span>
+          </div>
+        </div>
+        <div class="story-badge">
+          <strong>10+</strong>
+          Jahre Erfahrung
+        </div>
+      </div>
+      <div class="story-content fade-up">
+        <div class="section-label">Meine Story</div>
+        <h2 class="section-title">Vom Kunden, der zu viel zahlte – zum Makler, der das ändert.</h2>
+        <div class="green-divider"></div>
+        <blockquote class="story-quote">
+          „Ich habe selbst erlebt, wie undurchsichtig die Versicherungsbranche ist. Deshalb mache ich es anders."
+        </blockquote>
+        <p class="story-text">
+          [Hier kommt deine persönliche Geschichte: Wie bist du Makler geworden? Was hat dich angetrieben?
+          Welche Erfahrungen haben dich geprägt? Erzähle authentisch von deinem Weg.]
+        </p>
+        <p class="story-text">
+          Als unabhängiger Makler bei MFE bin ich <strong>ausschließlich deinen Interessen verpflichtet</strong> –
+          nicht einer Versicherungsgesellschaft. Das heißt: Ich vergleiche den gesamten Markt und empfehle nur, was wirklich passt.
+        </p>
+        <div class="story-highlights">
+          <div class="story-highlight">IHK-zertifiziert</div>
+          <div class="story-highlight">Unabhängig &amp; neutral</div>
+          <div class="story-highlight">Persönliche Betreuung</div>
+          <div class="story-highlight">Digital &amp; vor Ort</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="services-intro">
+      <div>
+        <div class="section-label">Meine Leistungen</div>
+        <h2 class="section-title">Was ich für dich tue.</h2>
+      </div>
+      <p class="section-sub">Vom Schutz deiner Arbeitskraft bis zur günstigen KFZ-Versicherung – ich begleite dich in allen Lebensbereichen.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-up">
+        <div class="service-icon">🛡️</div>
+        <div class="service-title">Berufsunfähigkeitsversicherung</div>
+        <p class="service-desc">Deine Arbeitskraft ist dein größtes Kapital. Eine BU-Versicherung schützt dich finanziell, wenn du nicht mehr arbeiten kannst – sei es durch Krankheit, Unfall oder Burnout.</p>
+        <a href="#calendar" class="service-link">Beratung anfragen →</a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-icon">🏦</div>
+        <div class="service-title">Altersvorsorge</div>
+        <p class="service-desc">Gesetzliche Rente allein reicht nicht. Ich zeige dir, wie du privat und steueroptimiert für dein Alter vorsorgen kannst – mit den besten Produkten am Markt.</p>
+        <a href="#calendar" class="service-link">Beratung anfragen →</a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-icon">🏥</div>
+        <div class="service-title">Krankenversicherung</div>
+        <p class="service-desc">GKV oder PKV? Welche Zusatzversicherung macht Sinn? Ich analysiere deine Situation und finde die optimale Lösung – unabhängig und transparent.</p>
+        <a href="#calendar" class="service-link">Beratung anfragen →</a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-icon">🏠</div>
+        <div class="service-title">Sachversicherungen</div>
+        <p class="service-desc">Haftpflicht, Hausrat, Wohngebäude – ich prüfe deine bestehenden Verträge auf Lücken und überteuerte Beiträge und optimiere deinen Schutz.</p>
+        <a href="#calendar" class="service-link">Beratung anfragen →</a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-icon">🚗</div>
+        <div class="service-title">KFZ-Versicherung</div>
+        <p class="service-desc">Günstigere KFZ-Versicherung bei gleicher oder besserer Leistung? Ich vergleiche über 100 Anbieter und spare dir bares Geld – mit meiner 200€-Garantie.</p>
+        <a href="#calendar" class="service-link">Beratung anfragen →</a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-icon">⚡</div>
+        <div class="service-title">Energieverträge</div>
+        <p class="service-desc">Strom und Gas zum besten Preis. Ich finde für dich attraktive Tarife und begleite dich beim Wechsel – stressfrei und unkompliziert.</p>
+        <a href="#calendar" class="service-link">Beratung anfragen →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USP 200€ -->
+<section id="usp">
+  <div class="container">
+    <div class="usp-grid">
+      <div>
+        <div class="usp-big">200€</div>
+        <h2 class="usp-sub-title">Ersparnis-Garantie – oder Geld zurück.</h2>
+        <p class="usp-desc">
+          Ich bin so sicher, dass ich für dich einen besseren Tarif finde – dass ich es garantiere.
+          Wenn ich keine Ersparnis von mindestens 200 € pro Jahr nachweisen kann, bekommst du
+          <strong style="color:#fff">200 € Cash</strong> von mir. Ohne Wenn und Aber.
+        </p>
+        <ul class="usp-steps">
+          <li><div class="step-num">1</div><span>Du schickst mir deine aktuellen Unterlagen (Versicherungsschein / Jahresrechnung)</span></li>
+          <li><div class="step-num">2</div><span>Ich analysiere kostenlos und unverbindlich deinen Vertrag</span></li>
+          <li><div class="step-num">3</div><span>Ich präsentiere dir bessere Alternativen – oder zahle 200 € bar</span></li>
+          <li><div class="step-num">4</div><span>Du entscheidest: Wechseln oder nicht – kein Druck, keine Verpflichtung</span></li>
+        </ul>
+        <a href="#calendar" class="btn-primary">Jetzt 200€-Check starten</a>
+      </div>
+      <div class="usp-card">
+        <div class="usp-card-icon">🏆</div>
+        <h3 class="usp-card-title">Mein Versprechen an dich</h3>
+        <p class="usp-card-text">
+          Kein Makler kann sich das leisten, wenn er nicht wirklich gut ist.
+          Ich kenne den Markt, ich vergleiche täglich – und ich spare meinen Kunden
+          durchschnittlich <strong style="color:var(--green-light)">340 € pro Jahr</strong>.
+          <br><br>
+          Der 200€-Check ist mein Beweis, dass ich nicht nur rede – sondern liefere.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDEPENDENCE -->
+<section id="independence">
+  <div class="container">
+    <div class="indep-grid">
+      <div class="fade-up">
+        <div class="section-label">Meine Unabhängigkeit</div>
+        <h2 class="section-title">Ich arbeite für dich – nicht für Versicherer.</h2>
+        <div class="green-divider"></div>
+        <p class="section-sub">Als unabhängiger Makler bin ich an keine Gesellschaft gebunden. Das bedeutet: Ich habe Zugang zu hunderten Anbietern und wähle immer das Beste für dich aus.</p>
+        <ul class="indep-points">
+          <li><div class="check">✓</div><span><strong>Keine Konzernbindung:</strong> Ich bin nicht an eine einzige Gesellschaft gebunden und habe keine Verkaufsquoten.</span></li>
+          <li><div class="check">✓</div><span><strong>Voller Marktüberblick:</strong> Ich vergleiche 100+ Anbieter und finde objektiv den besten Tarif für dich.</span></li>
+          <li><div class="check">✓</div><span><strong>Gesetzliche Pflicht:</strong> Als Makler bin ich gesetzlich verpflichtet, ausschließlich in deinem Interesse zu handeln (§ 60 VVG).</span></li>
+          <li><div class="check">✓</div><span><strong>Transparente Vergütung:</strong> Du weißt immer, wie ich bezahlt werde – keine versteckten Provisionen.</span></li>
+          <li><div class="check">✓</div><span><strong>Lebenslange Betreuung:</strong> Ich bin auch nach dem Abschluss für dich da – bei Schäden, Änderungen und Fragen.</span></li>
+        </ul>
+        <a href="#calendar" class="btn-primary" style="margin-top:2rem;display:inline-flex">Kostenlose Erstberatung</a>
+      </div>
+      <div class="indep-visual">
+        <div class="indep-tile accent"><div class="big">100+</div><div class="small">Versicherer</div></div>
+        <div class="indep-tile"><div class="big">0€</div><div class="small">Erstberatung</div></div>
+        <div class="indep-tile"><div class="big">§60</div><div class="small">VVG Schutz</div></div>
+        <div class="indep-tile accent"><div class="big">100%</div><div class="small">Auf deiner Seite</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="testi-intro fade-up">
+      <div class="section-label">Kundenstimmen</div>
+      <h2 class="section-title">Was meine Kunden sagen.</h2>
+      <div class="stars">★★★★★</div>
+      <p class="section-sub">Echte Bewertungen von echten Kunden. Keine Agentur. Keine Fake-Reviews.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">„[Hier kommt dein echtes Kundenzitat. Bitte mit deinen bestehenden Google- oder Social-Media-Bewertungen ersetzen. Je authentischer, desto besser!]"</p>
+        <div class="testi-author">
+          <div class="testi-avatar">MK</div>
+          <div><div class="testi-name">Max K.</div><div class="testi-role">KFZ-Versicherung gespart</div></div>
+        </div>
+      </div>
+      <div class="testi-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">„[Zweites Kundenzitat einfügen. Ideal: jemand, der die 200€-Garantie genutzt hat oder eine BU abgeschlossen hat. Echter Name + Kontext = maximales Vertrauen.]"</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SL</div>
+          <div><div class="testi-name">Sandra L.</div><div class="testi-role">Berufsunfähigkeitsversicherung</div></div>
+        </div>
+      </div>
+      <div class="testi-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">„[Drittes Zitat – idealerweise von einem Kunden, der mehrere Bereiche bei dir betreut hat. Zeigt Vertrauen und Langfristigkeit.]"</p>
+        <div class="testi-author">
+          <div class="testi-avatar">TH</div>
+          <div><div class="testi-name">Thomas H.</div><div class="testi-role">Altersvorsorge &amp; Krankenversicherung</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALENDAR -->
+<section id="calendar">
+  <div class="container">
+    <div class="cal-inner">
+      <div class="section-label" style="color:var(--green-light)">Termin buchen</div>
+      <h2 class="section-title">Bereit für deinen kostenlosen Check?</h2>
+      <p class="section-sub">Wähle einfach einen freien Termin in meinem Kalender. Das Gespräch dauert 30 Minuten – kostenlos, unverbindlich, und du nimmst echten Mehrwert mit.</p>
+      <div class="cal-embed">
+        <div class="cal-embed-icon">🗓</div>
+        <p class="cal-embed-text">
+          Hier kommt dein <strong>Google Calendar Booking-Widget</strong>.<br>
+          Ersetze diesen Block durch deinen echten Google Kalender Einbett-Code.
+        </p>
+        <p class="cal-embed-hint">Google Kalender → Einstellungen → Termine → Buchungsseite → „Auf Website einbetten" → Code kopieren</p>
+        <a href="#" class="btn-primary" style="margin-top:1rem">🗓 Zum Kalender (Platzhalter)</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.8rem">
+          <div style="width:36px;height:36px;background:var(--green);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;color:#fff;font-size:.85rem">MFE</div>
+          <strong style="color:#fff;font-size:.92rem">MFE Makler GmbH</strong>
+        </div>
+        <p class="brand-tagline">Versicherungen &amp; Energieverträge.<br>Unabhängig. Transparent. Für dich.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Leistungen</h4>
+        <ul>
+          <li><a href="#services">Berufsunfähigkeit</a></li>
+          <li><a href="#services">Altersvorsorge</a></li>
+          <li><a href="#services">Krankenversicherung</a></li>
+          <li><a href="#services">Sachversicherungen</a></li>
+          <li><a href="#services">KFZ-Versicherung</a></li>
+          <li><a href="#services">Energieverträge</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Unternehmen</h4>
+        <ul>
+          <li><a href="#story">Über mich</a></li>
+          <li><a href="#independence">Unabhängigkeit</a></li>
+          <li><a href="#usp">200€-Garantie</a></li>
+          <li><a href="#testimonials">Bewertungen</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="#calendar">Termin buchen</a></li>
+          <li><a href="mailto:info@mfe-makler.de">info@mfe-makler.de</a></li>
+          <li><a href="tel:+49">+49 [Nummer eintragen]</a></li>
+          <li><a href="#">Impressum</a></li>
+          <li><a href="#">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 MFE Makler GmbH. Alle Rechte vorbehalten.</span>
+      <span>Versicherungsmakler gem. § 34d GewO · IHK-zugelassen</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  document.querySelectorAll('.service-card, .testi-card').forEach((card, i) => {
+    card.style.transitionDelay = (i % 3) * 0.1 + 's';
+  });
+</script>
+</body>
+</html>
